@@ -26,6 +26,34 @@ POST /v3/tables/:sourceTableId/duplicate/
 
 For exact API-visible view parity, `POST /v3/tables` with `template: "no_views"` can create a table with no preconfigured system views. Ordinary table creation may add API-visible preconfigured views that cannot be deleted.
 
+A public-safe scratch creation shape:
+
+```json
+{
+  "name": "Scratch rebuild - descriptive name",
+  "workspaceId": "workspace_id",
+  "workbookId": "workbook_id",
+  "template": "no_views",
+  "type": "company"
+}
+```
+
+Turn auto-run off before adding action-heavy fields:
+
+```text
+PATCH /v3/tables/:tableId
+```
+
+```json
+{
+  "tableSettings": {
+    "AUTO_RUN_ON": false,
+    "AUTO_RUN_MODE": "keep_existing",
+    "HAS_SCHEDULED_RUNS": false
+  }
+}
+```
+
 ## Field Creation
 
 Use:
@@ -43,12 +71,18 @@ Rules observed in benchmark work:
 - Clay rejects switching a saved action to a different `actionKey`.
 - New field creation ignores supplied source field IDs, so generated field IDs must be mapped.
 - Always remap field IDs inside formulas, `inputsBinding`, `inputFieldIds`, extracted fields, conditional-run formulas, view settings, and table settings.
+- Do not copy live source field `typeSettings.sourceIds` into a scratch target. It can bind or materialize many source records unexpectedly. For controlled scratch rebuilds, clear source IDs and add only the selected seed rows.
 
 ## Views And Ordering
 
+Observed paths:
+
 ```text
+POST /v3/tables/:tableId/views
 PATCH /v3/tables/:tableId/views/:viewId/fields/:fieldId
 ```
+
+For view creation, remap the `fields` dictionary keys and every embedded field ID before posting to the target table. This includes hidden/visible state, filters, sorts, grouping, and any field references inside view settings.
 
 Sequential moves with `beforeFieldId` or `afterFieldId` are a reliable fallback when bulk field reorder paths fail.
 
@@ -77,6 +111,8 @@ Clay expects direct scalar cell values:
 
 Do not wrap values as `{ "value": "example" }`; that stores nested values and can cause coercion errors.
 
+If an accidentally copied source binding materializes too many records, delete extras with `DELETE /v3/tables/:tableId/records` in batches and then patch the source field binding before continuing.
+
 ## Field Groups
 
 Generic groups can be recreated with:
@@ -86,7 +122,59 @@ POST /v3/tables/:tableId/fields/group
 POST /v3/tables/:tableId/fields/group/:groupId
 ```
 
+The create payload requires a `fieldIds` array:
+
+```json
+{
+  "name": "Group name",
+  "fieldIds": ["f_target"]
+}
+```
+
 Map generated group IDs separately. Source `fieldGroupMap` can contain stale field references that are not present in the live `fields[]` array, so score only live refs.
+
+## Run Control
+
+Run selected fields and selected records with:
+
+```text
+PATCH /v3/tables/:tableId/run
+```
+
+Minimum observed payload shape:
+
+```json
+{
+  "fieldIds": ["f_target_action_or_formula"],
+  "runRecords": {
+    "recordIds": ["r_target_seed_row"],
+    "tableId": "target_table_id"
+  },
+  "forceRun": true,
+  "callerName": "codex_sample_run",
+  "skipActionFieldRuns": false,
+  "skipTriggerSetting": false
+}
+```
+
+Alternative run selectors include `viewId` and `viewIdTopRecords` inside `runRecords` when the goal is to run a view slice instead of explicit record IDs.
+
+Observed response shape:
+
+```json
+{
+  "recordCount": 10,
+  "runMode": "INDIVIDUAL"
+}
+```
+
+After a run, poll:
+
+```text
+GET /v3/workspaces/:workspaceId/tables/:tableId/fields/runstatus
+```
+
+Useful statuses include `SUCCESS`, `SUCCESS_NO_DATA`, `QUEUED`, `AWAITING_CALLBACK`, and action-specific errors such as `ERROR_BLANK_TOKEN`. Persistent `AWAITING_CALLBACK` means wait or inspect provider behavior. `ERROR_BLANK_TOKEN` usually means a required input token is blank for the affected rows and should be debugged before rerun.
 
 ## HTTP API Columns
 
@@ -112,6 +200,7 @@ Use `inputsBinding[].formulaMap` for headers. Keep placeholder values when the c
 - inspect `typeSettings.useCase`, model, prompt, extracted-field wiring, and run guards
 - distinguish standard OpenAI prompt columns from Claygent-style generated variants
 - fetch a fresh table readback after every write
+- expect Clay to normalize some hidden settings or input field order on save
 
 Benchmark blocker: new/copy-created `use-ai` fields normalized hidden `customRateLimitRules` from a legacy source value of `200/1000ms` to the current workspace default of `5/1000ms`, even after direct field patches returned HTTP 200. The Edit Column drawer exposed model, account, prompt, output, run condition, and delay controls, but no editable custom-rate control.
 
