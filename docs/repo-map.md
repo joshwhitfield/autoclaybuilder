@@ -11,7 +11,8 @@ AutoClayBuilder collects public-safe Clay table building knowledge and lightweig
 - `README.md`: project overview and quick start.
 - `AGENTS.md`: instructions for AI agents and contributors.
 - `CONTRIBUTING.md`: contribution rules and PR expectations.
-- `docs/autoresearch-clone-loop.md`: end-to-end scratch-table clone workflow.
+- `docs/clay-cup-knowledge-base.md`: living operating manual for fast Clay Cup style table builds and future public-safe learnings.
+- `docs/autoresearch-clone-loop.md`: end-to-end scratch-table clone workflow and sample-run safety model.
 - `docs/frontend-api-patterns.md`: observed Clay frontend endpoint and payload patterns.
 - `docs/browser-automation-patterns.md`: when and how to use browser automation.
 - `docs/recent-table-patterns.md`: reusable workflow families from recent Clay tables.
@@ -44,6 +45,16 @@ score report
 
 The next useful step is to factor reusable manifest normalization into a small Python package under `autoclaybuilder/`, then move the scripts onto that package.
 
+## Knowledge Base Update Rules
+
+When a new Clay lesson is learned:
+
+- Put strategy, workflow architecture, Sculptor usage, and competition tactics in `docs/clay-cup-knowledge-base.md`.
+- Put endpoint or payload behavior in `docs/frontend-api-patterns.md` with method, path template, purpose, payload shape, readback verification, and known normalization behavior.
+- Put clone-loop changes in `docs/autoresearch-clone-loop.md`.
+- Keep examples fake, redacted, and reusable.
+- Do not store live table IDs, workspace IDs, raw rows, screenshots, cookies, bearer tokens, API keys, auth headers, webhook URLs, or provider secrets.
+
 ## Good First Contribution Areas
 
 - Add fake fixtures that cover formulas, action fields, extracted fields, views, and field groups.
@@ -51,6 +62,7 @@ The next useful step is to factor reusable manifest normalization into a small P
 - Add unit tests around ID remapping and redaction.
 - Add payload builders for `http-api-v2`, formula fields, extracted fields, and `use-ai`.
 - Add browser automation recipes as docs or small harness scripts, without requiring live credentials.
+- Add run-status summarization helpers for sample runs.
 
 ## What Not To Do
 

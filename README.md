@@ -10,6 +10,7 @@ The goal is practical table cloning and table generation:
 - rebuild fields, views, formulas, extracted fields, action columns, and row seeds
 - use browser automation only for UI-only checks and missing API coverage
 - score source-to-target config parity from fresh readbacks
+- maintain an operational Clay knowledge base for fast GTM workflow builds
 
 This repository intentionally does not include cookies, bearer tokens, API keys, raw table manifests, row data dumps, screenshots with sensitive UI, webhook URLs, Slack IDs, Google Sheet IDs, or Smartlead campaign IDs.
 
@@ -17,7 +18,8 @@ This repository intentionally does not include cookies, bearer tokens, API keys,
 
 - [AGENTS.md](AGENTS.md): orientation and rules for AI agents working in the repo.
 - [docs/repo-map.md](docs/repo-map.md): quick map of the repo and good first contribution areas.
-- [docs/autoresearch-clone-loop.md](docs/autoresearch-clone-loop.md): the scratch-table clone loop and safety model.
+- [docs/clay-cup-knowledge-base.md](docs/clay-cup-knowledge-base.md): living Clay Cup operating manual for fast, public-safe table builds.
+- [docs/autoresearch-clone-loop.md](docs/autoresearch-clone-loop.md): the scratch-table clone loop, sample-run protocol, and safety model.
 - [docs/frontend-api-patterns.md](docs/frontend-api-patterns.md): Clay frontend endpoint and payload rules found during benchmark work.
 - [docs/browser-automation-patterns.md](docs/browser-automation-patterns.md): browser-use patterns for Clay drawers, formulas, and UI verification.
 - [docs/recent-table-patterns.md](docs/recent-table-patterns.md): reusable patterns from recent Growth Engine X Clay tables.
@@ -66,6 +68,7 @@ python3 scripts/score_clay_parity.py \
 5. Fetch the target table through the same API.
 6. Score parity from the source and target readbacks.
 7. Use browser automation for formula validation, edit drawers, menus, run controls, and representative cell inspection.
+8. Run selected fields and sample records only after config looks right.
 
 The first milestone is config parity. Runtime outputs are useful evidence, but they should be logged separately from config parity unless the task explicitly requires output equality.
 
