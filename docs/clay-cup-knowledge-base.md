@@ -27,6 +27,16 @@ Given a plain-English GTM goal, quickly produce a Clay workflow that is:
 9. Inspect run status, blanks, errors, and evidence fields.
 10. Scale only after the sample explains itself.
 
+## Companion Playbooks
+
+Use these deeper docs to pick the right build path quickly:
+
+- `docs/integration-selector.md`: provider families, current official-docs integration inventory, and goal-to-integration routing.
+- `docs/waterfalls-functions-playbook.md`: waterfall design, contact/provider fallback patterns, and reusable Function contracts.
+- `docs/prompt-to-table-architecture.md`: table archetypes, default columns/views, and prompt-to-build translation rules.
+- `docs/frontend-api-patterns.md`: verified frontend endpoint and payload behavior.
+- `docs/autoresearch-clone-loop.md`: scratch rebuild order, sample runs, and clone safety.
+
 ## Clay Capability Map
 
 Use these buckets when converting a goal into a table design.
@@ -185,8 +195,10 @@ When a new Clay lesson is learned:
 2. Convert live details into public-safe templates.
 3. Add exact method/path templates only when verified by readback or live behavior.
 4. Keep raw requests, raw manifests, table IDs, workspace IDs, credentials, and screenshots out of git.
-5. Add the note to this knowledge base, then link deeper details from a focused doc when needed.
-6. If the learning changes clone behavior, update `docs/frontend-api-patterns.md` or `docs/autoresearch-clone-loop.md` too.
+5. Add provider routing to `docs/integration-selector.md`.
+6. Add waterfall and reusable Function patterns to `docs/waterfalls-functions-playbook.md`.
+7. Add new table archetypes to `docs/prompt-to-table-architecture.md`.
+8. If the learning changes clone behavior, update `docs/frontend-api-patterns.md` or `docs/autoresearch-clone-loop.md` too.
 
 ## Useful Official Docs
 
@@ -195,5 +207,8 @@ When a new Clay lesson is learned:
 - Find: https://university.clay.com/docs-topics/find
 - Enrich: https://university.clay.com/docs-topics/enrich
 - Transform: https://university.clay.com/docs-topics/transform
+- Web scraping: https://university.clay.com/docs-topics/web-scraping
 - Signals: https://university.clay.com/docs-topics/signals
 - Export: https://university.clay.com/docs-topics/export
+- Gen AI: https://university.clay.com/docs-topics/gen-ai
+- Functions lessons: https://university.clay.com/lessons/introduction-to-functions
