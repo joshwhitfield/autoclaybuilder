@@ -19,6 +19,9 @@ This repository intentionally does not include cookies, bearer tokens, API keys,
 - [AGENTS.md](AGENTS.md): orientation and rules for AI agents working in the repo.
 - [docs/repo-map.md](docs/repo-map.md): quick map of the repo and good first contribution areas.
 - [docs/clay-cup-knowledge-base.md](docs/clay-cup-knowledge-base.md): living Clay Cup operating manual for fast, public-safe table builds.
+- [docs/integration-selector.md](docs/integration-selector.md): integration family selector and current official-docs provider inventory.
+- [docs/waterfalls-functions-playbook.md](docs/waterfalls-functions-playbook.md): waterfall, reusable Function, and credit-aware enrichment patterns.
+- [docs/prompt-to-table-architecture.md](docs/prompt-to-table-architecture.md): translation layer from a plain-English GTM goal to a Clay table plan.
 - [docs/autoresearch-clone-loop.md](docs/autoresearch-clone-loop.md): the scratch-table clone loop, sample-run protocol, and safety model.
 - [docs/frontend-api-patterns.md](docs/frontend-api-patterns.md): Clay frontend endpoint and payload rules found during benchmark work.
 - [docs/browser-automation-patterns.md](docs/browser-automation-patterns.md): browser-use patterns for Clay drawers, formulas, and UI verification.
