@@ -93,6 +93,29 @@ Common run conditions:
 - only run when `work_email` is blank
 - do not run on free-mail domains unless the workflow specifically needs them
 
+Observed provider payload notes:
+
+- Prospeo work email action: `prospeo-find-work-email-v2`, package `48a31bbb-63e6-4461-8a62-d88bb2cd6b0f`.
+- Prospeo inputs: `full_name`, `company_domain`, optional `include_catch_all`.
+- Prospeo useful outputs: `email`, `domain`, `first_name`, `last_name`, and `email_status`; verified results can expose `email_status: VERIFIED`.
+- LeadMagic fallback action: `leadmagic-find-work-email`, package `edb58209-a62d-42be-992a-e41b87eeacc2`.
+- LeadMagic inputs: `name`, `domain`, optional `includeCatchAll`.
+- Sample testing showed why fallback providers matter: rows with no primary-provider result can still produce useful fallback hits. Keep primary and fallback raw columns during debugging, then write the canonical result from the first verified hit.
+
+Minimal canonicalization formula shape:
+
+```text
+if Prospeo email_status is VERIFIED:
+  work_email = Prospeo email
+  email_provider = "Prospeo"
+else if LeadMagic returns an email:
+  work_email = LeadMagic email
+  email_provider = "LeadMagic"
+else:
+  work_email = blank
+  email_provider = blank
+```
+
 ## Phone Waterfall Pattern
 
 Use only when the goal justifies the cost and compliance posture.
@@ -186,7 +209,7 @@ Do not use a Function when:
 ## Function Design Process
 
 1. Prototype the logic in a normal scratch table.
-2. Name the intended Function by output, not by provider: `Get verified work email`, `Score healthcare fintech account`, `Detect competitor switch intent`.
+2. Name the intended Function by output, not by provider: `Get verified work email`, `Score target account`, `Detect competitor switch intent`.
 3. Define a minimal input contract.
 4. Define a small output contract with stable field names.
 5. Add debug outputs only if future tables need them.

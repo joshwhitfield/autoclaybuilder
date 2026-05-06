@@ -18,7 +18,7 @@ This repository intentionally does not include cookies, bearer tokens, API keys,
 
 - [AGENTS.md](AGENTS.md): orientation and rules for AI agents working in the repo.
 - [docs/repo-map.md](docs/repo-map.md): quick map of the repo and good first contribution areas.
-- [docs/clay-cup-knowledge-base.md](docs/clay-cup-knowledge-base.md): living Clay Cup operating manual for fast, public-safe table builds.
+- [docs/clay-builder-knowledge-base.md](docs/clay-builder-knowledge-base.md): living Clay operating manual for fast, public-safe table builds.
 - [docs/integration-selector.md](docs/integration-selector.md): integration family selector and current official-docs provider inventory.
 - [docs/waterfalls-functions-playbook.md](docs/waterfalls-functions-playbook.md): waterfall, reusable Function, and credit-aware enrichment patterns.
 - [docs/prompt-to-table-architecture.md](docs/prompt-to-table-architecture.md): translation layer from a plain-English GTM goal to a Clay table plan.

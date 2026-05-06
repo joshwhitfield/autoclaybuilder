@@ -71,6 +71,14 @@ People discovery:
 
 - Find People, Mixrank, Nimbler, Pubrio, ZoomInfo, People Data Labs, The Org, The Swarm, Modash, Upfluence, Influencer Club, Weekday, Loxo.
 
+Observed native people finder action pattern:
+
+- Action key: `find-lists-of-people-with-mixrank`.
+- Package: `e251a70e-46d7-4f3a-b3ef-a211ad3d8bd2`.
+- Useful inputs: `company_identifier`, `job_title_keywords`, `job_title_seniority_levels_v2`, `job_title_mode`, `limit`, `identifiers_only`, and `include_past_experiences`.
+- For founder or CEO discovery, bind `company_identifier` to a company LinkedIn URL first, with domain as fallback, then use keywords such as `CEO, Founder, Co-Founder, Chief Executive Officer`, seniority `founder, c-suite`, and `limit: 1`.
+- The action output can expose a `people[]` array. Extraction formulas such as `{{People Finder}}?.people?.[0]?.name`, `first_name`, `title`, and `url` worked in live sample testing.
+
 Profile and identity resolution:
 
 - People Data Labs, LiveData, Reverse Contact, Minerva, Clay Enrichments, ContactLevel, Vector, Identity Matrix, LeadIQ, Surfe, Nimbler.
@@ -78,6 +86,12 @@ Profile and identity resolution:
 Work email finding and validation:
 
 - Work Email waterfall, Prospeo, Leadmagic, Findymail, Hunter, DropContact, Datagma, Nimbler, Wiza, People Data Labs, Enrow, Fullenrich, BetterContact, Snov.io, Lusha, LeadIQ.
+
+Observed work email action patterns:
+
+- Prospeo: action key `prospeo-find-work-email-v2`, package `48a31bbb-63e6-4461-8a62-d88bb2cd6b0f`, with inputs such as `full_name`, `company_domain`, and optional `include_catch_all`.
+- LeadMagic: action key `leadmagic-find-work-email`, package `edb58209-a62d-42be-992a-e41b87eeacc2`, with inputs such as `name`, `domain`, and optional `includeCatchAll`.
+- Provider actions can require an `authAccountId` even when the action package is available in the workspace. See `docs/frontend-api-patterns.md` for the public-safe binding pattern.
 
 Email verification and cleaning:
 
@@ -413,7 +427,7 @@ Getting started topic:
 
 ## Maintenance Notes
 
-- Refresh this inventory from official Clay docs before a major competition build.
+- Refresh this inventory from official Clay docs before a major build.
 - Keep provider names here, not implementation secrets.
 - Move exact endpoint behavior to `docs/frontend-api-patterns.md`.
 - Move reusable workflow design to `docs/waterfalls-functions-playbook.md`.

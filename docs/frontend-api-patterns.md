@@ -22,6 +22,7 @@ Observed useful paths:
 POST /v3/workbooks
 POST /v3/tables
 POST /v3/tables/:sourceTableId/duplicate/
+POST /v3/sources/create-cpj-table
 ```
 
 For exact API-visible view parity, `POST /v3/tables` with `template: "no_views"` can create a table with no preconfigured system views. Ordinary table creation may add API-visible preconfigured views that cannot be deleted.
@@ -54,6 +55,63 @@ PATCH /v3/tables/:tableId
 }
 ```
 
+## Native CPJ Source Creation
+
+For native "find list" sources, the verified frontend path in this environment was:
+
+```text
+POST /v3/sources/create-cpj-table
+```
+
+The same path without `/v3` returned 404, so keep the versioned prefix in payload builders.
+
+Public-safe shape for a company source:
+
+```json
+{
+  "workspaceId": "workspace_id",
+  "workbookId": "workbook_id",
+  "workbookName": "Scratch workbook",
+  "workbookAndTableNameOverride": "Source table name",
+  "sourceNameOverride": "Find SaaS companies",
+  "cpjConfig": {
+    "type": "companies",
+    "clientSettings": {
+      "tableType": "company"
+    },
+    "destinationTableSetupMode": "add_basic_fields",
+    "basicFields": ["company_name", "domain", "linkedin_company_url"],
+    "typeSettings": {
+      "name": "Find companies",
+      "actionKey": "find-lists-of-companies-with-mixrank-source",
+      "actionPackageId": "e251a70e-46d7-4f3a-b3ef-a211ad3d8bd2",
+      "previewActionKey": "find-lists-of-companies-with-mixrank-source-preview",
+      "recordsPath": "companies",
+      "idPath": "linkedin_company_id",
+      "scheduleConfig": {
+        "runSettings": "once"
+      },
+      "disableTriggerOnCreate": false,
+      "disableTriggerOnUpdate": false,
+      "hasEvaluatedInputs": true,
+      "inputs": {
+        "number_of_records": 25,
+        "keywords": ["saas"],
+        "start_from_method": "query",
+        "startFromCompanyType": "semantic_description"
+      }
+    }
+  }
+}
+```
+
+Observed input gotchas:
+
+- `start_from_method` accepted values such as `query`, `CsvOfCompanies`, `url`, and `CompanyAudienceSegment`; `csv_of_companies` was rejected.
+- `startFromCompanyType` accepted `company_identifier` and `semantic_description`; `lookalikes` was rejected.
+- Boolean-looking source filters such as `has_resolved_domain` and `resolved_domain_is_live` expected string values like `Yes` or `No` when present.
+- Successful source creation can return `initialRecordIds` and `initialRecords` in table readback extra data. Treat those as live data and do not commit them.
+
 ## Field Creation
 
 Use:
@@ -72,6 +130,17 @@ Rules observed in benchmark work:
 - New field creation ignores supplied source field IDs, so generated field IDs must be mapped.
 - Always remap field IDs inside formulas, `inputsBinding`, `inputFieldIds`, extracted fields, conditional-run formulas, view settings, and table settings.
 - Do not copy live source field `typeSettings.sourceIds` into a scratch target. It can bind or materialize many source records unexpectedly. For controlled scratch rebuilds, clear source IDs and add only the selected seed rows.
+
+## Action Account Binding
+
+Action fields can be enabled but still show `settingsError: MISSING_AUTH` if the field has no selected connection. Use:
+
+```text
+GET /v3/workspaces/:workspaceId/app-accounts
+PATCH /v3/tables/:tableId/fields/:fieldId
+```
+
+Patch the field with the chosen connection in `typeSettings.authAccountId`, then fetch the table again to verify the settings error cleared. Never commit real auth account IDs; examples should use placeholders like `aa_provider`.
 
 ## Views And Ordering
 
@@ -198,6 +267,9 @@ Use `inputsBinding[].formulaMap` for headers. Keep placeholder values when the c
 `use-ai` fields require extra care:
 
 - inspect `typeSettings.useCase`, model, prompt, extracted-field wiring, and run guards
+- observed action key: `use-ai`
+- observed package: `67ba01e9-1898-4e7d-afe7-7ebe24819a57`
+- important inputs include `useCase`, `prompt`, `temperature`, `reasoningLevel`, `model`, `maxCostInCents`, `jsonMode`, and `systemPrompt`
 - distinguish standard OpenAI prompt columns from Claygent-style generated variants
 - fetch a fresh table readback after every write
 - expect Clay to normalize some hidden settings or input field order on save

@@ -11,7 +11,7 @@ AutoClayBuilder collects public-safe Clay table building knowledge and lightweig
 - `README.md`: project overview and quick start.
 - `AGENTS.md`: instructions for AI agents and contributors.
 - `CONTRIBUTING.md`: contribution rules and PR expectations.
-- `docs/clay-cup-knowledge-base.md`: living operating manual for fast Clay Cup style table builds and future public-safe learnings.
+- `docs/clay-builder-knowledge-base.md`: living operating manual for fast Clay table builds and future public-safe learnings.
 - `docs/integration-selector.md`: integration routing guide plus current provider inventory from official Clay docs topic indexes.
 - `docs/waterfalls-functions-playbook.md`: waterfall design, Function design, and reusable enrichment patterns.
 - `docs/prompt-to-table-architecture.md`: how to translate plain-English GTM goals into table archetypes, columns, views, and run strategy.
@@ -52,7 +52,7 @@ The next useful step is to factor reusable manifest normalization into a small P
 
 When a new Clay lesson is learned:
 
-- Put strategy, workflow architecture, Sculptor usage, and competition tactics in `docs/clay-cup-knowledge-base.md`.
+- Put strategy, workflow architecture, Sculptor usage, and table-building tactics in `docs/clay-builder-knowledge-base.md`.
 - Put provider and integration routing in `docs/integration-selector.md`.
 - Put waterfalls, reusable enrichment sequences, and Function contracts in `docs/waterfalls-functions-playbook.md`.
 - Put prompt translation and reusable table archetypes in `docs/prompt-to-table-architecture.md`.

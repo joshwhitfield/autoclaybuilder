@@ -1,4 +1,4 @@
-# Clay Cup Knowledge Base
+# Clay Builder Knowledge Base
 
 Updated: 2026-05-06
 
@@ -9,7 +9,7 @@ This is the living operating manual for fast, public-safe Clay table building. I
 Given a plain-English GTM goal, quickly produce a Clay workflow that is:
 
 - accurate enough to run on a small sample
-- explainable enough for a judge, operator, or sales team to trust
+- explainable enough for an operator, reviewer, or sales team to trust
 - cheap enough to avoid wasting credits on unqualified rows
 - structured enough to scale after sample verification
 - documented enough that the next agent can continue without rediscovery
@@ -176,9 +176,9 @@ Verify run progress through fresh `fields/runstatus` readbacks. Async providers 
 - Do not run HTTP/API columns with placeholder credentials. Verify affected cell count is zero before handing off placeholders.
 - Do not treat runtime output equality as the same as config parity. Runtime results can depend on async providers, rate limits, permissions, and current external data.
 
-## Competition Patterns
+## High-Quality Table Patterns
 
-Winning Clay tables should make the answer obvious. Favor these shapes:
+Strong Clay tables should make the answer obvious. Favor these shapes:
 
 - Evidence-first scoring: score plus reason, trigger, source URL, and recommended action.
 - Multi-signal qualification: combine firmographics, hiring, news, tech stack, web intent, and persona fit before contact enrichment.
@@ -191,7 +191,7 @@ Winning Clay tables should make the answer obvious. Favor these shapes:
 
 When a new Clay lesson is learned:
 
-1. Decide whether it is a capability, endpoint, failure mode, build pattern, or competition tactic.
+1. Decide whether it is a capability, endpoint, failure mode, build pattern, or table-building tactic.
 2. Convert live details into public-safe templates.
 3. Add exact method/path templates only when verified by readback or live behavior.
 4. Keep raw requests, raw manifests, table IDs, workspace IDs, credentials, and screenshots out of git.

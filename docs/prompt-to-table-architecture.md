@@ -22,7 +22,7 @@ If these are missing, use safe defaults: scratch table, auto-run off, 10-row sam
 
 ## Universal Column Groups
 
-Most competition-grade tables should have these groups.
+Most production-ready tables should have these groups.
 
 Source:
 
@@ -134,6 +134,30 @@ Common integrations:
 Outputs:
 
 - buyer rows with persona match, email status, provider, export readiness.
+
+### SaaS Founder Outreach
+
+Use when the goal is a compact outbound table such as "find SaaS companies, find the founder or CEO, verify emails, and draft a personalized email."
+
+Architecture:
+
+1. Source companies with Find Companies using a specific segment, geography, size, funding, tech, or category description.
+2. Keep the company source small until the run path is proven, for example 25 rows.
+3. Normalize company name, domain, LinkedIn URL, and basic firmographics.
+4. Find one founder, co-founder, or CEO per qualified account.
+5. Extract canonical person fields from the people finder result.
+6. Run work email providers behind company-domain and person-name guards.
+7. Canonicalize to `work_email`, `email_status`, and `email_provider`.
+8. Draft outreach with Use AI or Claygent from a product brief, account evidence, persona title, and verified email status.
+9. Put unverified or no-contact rows into review, not export.
+
+Common integrations:
+
+- Find Companies, Find People, Mixrank, Prospeo, Leadmagic, Work Email waterfall, Use AI, Claygent.
+
+Outputs:
+
+- company, founder or CEO, verified email when available, provider status, message angle, email draft, export readiness.
 
 ### Signal Monitor
 
@@ -293,7 +317,7 @@ Risks:
 
 ## Quality Bar
 
-A table is competition-grade when:
+A table is production-ready when:
 
 - every high-priority row explains why it is high priority
 - every export-ready row has proof and required contact/status fields
