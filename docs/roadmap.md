@@ -23,6 +23,33 @@ This is the current build plan for turning AutoClayBuilder from a knowledge base
   - endpoint notes
 - Add CLI commands for `redact`, `score`, and `summarize`.
 
+## Phase 2.5: Claygent Mastery Track
+
+Build a public-safe Claygent knowledge base that makes Codex strong at choosing, prompting, testing, and operating Claygents.
+
+Research and document:
+
+- Claygent builder workflow: workspace-level agents, test cases, version history, publishing, and reuse across tables.
+- Claygent versus Use AI versus Sculptor versus Functions: when each surface is the right tool.
+- Model selection framework: Claygent-specific models, provider models, cost/credit tradeoffs, context needs, web research needs, reasoning depth, and speed.
+- Advanced prompting patterns: role, goal, inputs, source strategy, search constraints, evidence requirements, output schema, confidence, refusal/unknown handling, and retry guidance.
+- Output contracts: JSON-style fields, enums, citation/evidence fields, confidence scores, `needs_review`, and downstream-safe values.
+- Test workflow: free test cases where available, sample rows, A/B prompt versions, pinned versus latest agent behavior, and regression checks before workspace-wide updates.
+- Data and permission rules: connection access, documents/data sources, BYOK behavior, row-level data sent to models, and public-safe documentation practices.
+- Cost controls: model choice, max output length, conditional runs, qualification gates before Claygent, and when to use cheaper deterministic providers first.
+- Failure modes: hallucinated evidence, paywalled/password-protected sources, stale public pages, ambiguous companies, blank inputs, overbroad prompts, and non-parseable outputs.
+- Implementation targets: `docs/claygent-playbook.md`, prompt templates, model selection matrix, and fake test cases for common GTM agents.
+
+Seed sources to verify before writing the playbook:
+
+- https://university.clay.com/docs/claygent-builder
+- https://university.clay.com/docs/ai-in-clay
+- https://university.clay.com/docs/ai-tokens
+- https://university.clay.com/docs/writing-ai-prompts-in-clay
+- https://university.clay.com/lessons/claygent-ai-web-scraper-limitless-research
+- https://university.clay.com/lessons/enriching-with-claygent
+- https://university.clay.com/docs/access-settings-for-connections
+
 ## Phase 3: Payload Builders
 
 Add payload builders for the common Clay column types:
